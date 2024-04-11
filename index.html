@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Information Chart</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="country-input" placeholder="Enter countries separated by commas...">
+        <button id="search-btn">Search</button>
+        <button id="reset-btn">Reset</button>
+    </div>
+    <div id="countries-container"></div>
+    <canvas id="comparisonChart" width="400" height="400"></canvas>
+    <script src="scripts.js"></script>
+</body>
+</html>
