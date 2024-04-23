@@ -56,6 +56,7 @@ function displayCountry(country) {
         <p>Population: ${country.population.toLocaleString()}</p>
         <p>Area: ${country.area.toLocaleString()} km²</p>
         <p>Gini coefficient: ${country.gini ? country.gini['2019'] : 'N/A'}</p>
+        <iframe src="https://maps.google.com/maps?q=${country.latlng[0]},${country.latlng[1]}&z=6&output=embed" width="300" height="200" frameborder="0" style="border:0;" allowfullscreen></iframe>
     `;
     countriesContainer.appendChild(countryDiv); // Lägg till elementet i DOM
 }
@@ -65,27 +66,39 @@ function updateChart(dataset) {
     const ctx = document.getElementById('comparisonChart').getContext('2d');
     if (chart) chart.destroy(); // Förstör den gamla instansen av diagrammet om den finns
 
-    // Skapa ett nytt diagram
+    // Skapa ett nytt radardiagram
     chart = new Chart(ctx, {
-        type: 'bar', // Använd stapeldiagram
+        type: 'radar', // Ändra typ till 'radar'
         data: {
             labels: ['Population', 'Area', 'Gini Coefficient'], // Definiera axlarnas etiketter
-            datasets: dataset // Använd datasetet som innehåller information om länder
+            datasets: dataset.map(data => ({
+                label: data.label,
+                backgroundColor: data.backgroundColor + '77', // Lägg till opacitet till färgen
+                borderColor: data.backgroundColor,
+                data: data.data
+            }))
         },
         options: { // Anpassa utseendet på diagrammet
+            elements: {
+                line: {
+                    borderWidth: 3
+                }
+            },
             scales: {
-                y: {
-                    beginAtZero: true
+                r: {
+                    angleLines: {
+                        display: false
+                    },
+                    suggestedMin: 0
                 }
             },
             plugins: {
                 legend: {
+                    position: 'top',
                     labels: {
-                        color: 'blue',
                         font: {
-                            size: 20,
+                            size: 20, // Anpassa storleken på texten i legenden
                             family: 'sans-serif',
-                            weight: 'lighter',
                         }
                     }
                 }
