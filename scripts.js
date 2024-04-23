@@ -29,7 +29,7 @@ async function searchCountries(countryNames) {
             if (!response.ok) throw new Error(`${response.status}: ${countries.message}`);
 
             const country = countries[0]; // Anta att det första resultatet är det önskade landet
-            displayCountry(country); // Visa landets information
+            displayCountry(country, dataset); // Visa landets information
             // Lägg till landets data i dataset för diagrammet
             dataset.push({
                 label: country.name.common,
@@ -57,6 +57,7 @@ function displayCountry(country) {
         <p>Area: ${country.area.toLocaleString()} km²</p>
         <p>Gini coefficient: ${country.gini ? country.gini['2019'] : 'N/A'}</p>
         <iframe src="https://maps.google.com/maps?q=${country.latlng[0]},${country.latlng[1]}&z=6&output=embed" width="300" height="200" frameborder="0" style="border:0;" allowfullscreen></iframe>
+        <button onclick="removeCountry('${country.name.common}', this.parentElement, dataset)">Remove</button>
     `;
     countriesContainer.appendChild(countryDiv); // Lägg till elementet i DOM
 }
@@ -68,7 +69,7 @@ function updateChart(dataset) {
 
     // Skapa ett nytt radardiagram
     chart = new Chart(ctx, {
-        type: 'radar', // Ändra typ till 'radar'
+        type: 'radar',
         data: {
             labels: ['Population', 'Area', 'Gini Coefficient'], // Definiera axlarnas etiketter
             datasets: dataset.map(data => ({
@@ -122,4 +123,17 @@ function resetSearch() {
     input.value = ''; // Töm inmatningsfältet
     countriesContainer.innerHTML = ''; // Rensa visade länder
     if (chart) chart.destroy(); // Förstör diagrammet om det finns
+}
+
+// Funktion för att ta bort ett land
+function removeCountry(countryName, element, dataset) {
+    // Ta bort landelementet från DOM
+    element.remove();
+
+    // Hitta indexet för landet i datasetet och ta bort det
+    const index = dataset.findIndex(data => data.label === countryName);
+    if (index !== -1) {
+        dataset.splice(index, 1);
+        updateChart(dataset); // Uppdatera diagrammet med det nya datasetet
+    }
 }
