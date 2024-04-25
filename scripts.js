@@ -62,10 +62,42 @@ function displayCountry(country) {
     countriesContainer.appendChild(countryDiv); // Lägg till elementet i DOM
 }
 
+
 // Funktion för att skapa eller uppdatera diagrammet med Chart.js
 function updateChart(dataset) {
     const ctx = document.getElementById('comparisonChart').getContext('2d');
     if (chart) chart.destroy(); // Förstör den gamla instansen av diagrammet om den finns
+
+    /*
+    // Skapa ett nytt radardiagram
+    chart = new Chart(ctx, {
+        type: 'bar', // Använd stapeldiagram
+        data: {
+            labels: ['Population', 'Area', 'Gini Coefficient'], // Definiera axlarnas etiketter
+            datasets: dataset // Använd datasetet som innehåller information om länder
+        },
+        options: { // Anpassa utseendet på diagrammet
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'Green',
+                        font: {
+                            size: 20,
+                            family: 'sans-serif',
+                            weight: 'lighter',
+                        }
+                    }
+                }
+            }
+        }
+    });
+} */
+
 
     // Skapa ett nytt radardiagram
     chart = new Chart(ctx, {
@@ -98,7 +130,7 @@ function updateChart(dataset) {
                     position: 'top',
                     labels: {
                         font: {
-                            size: 20, // Anpassa storleken på texten i legenden
+                            size: 20,
                             family: 'sans-serif',
                         }
                     }
@@ -106,7 +138,7 @@ function updateChart(dataset) {
             }
         }
     });
-}
+} 
 
 // Funktion för att generera en slumpmässig färg
 function getRandomColor() {
